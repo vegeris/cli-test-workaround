@@ -17,7 +17,6 @@ const child_process_1 = __importDefault(require("child_process"));
 const tree_kill_1 = __importDefault(require("tree-kill"));
 const constants_1 = require("../utils/constants");
 const logger_1 = __importDefault(require("../utils/logger"));
-const { platform } = require('node:process');
 exports.shell = {
     /**
      * Spawns a shell command
@@ -75,11 +74,12 @@ exports.shell = {
     runCommandSync: function runSyncCommand(command, shellOpts) {
         try {
             // Log command
-            logger_1.default.info(`CLI Command started: ${command}`);
+            logger_1.default.info(`Sync CLI Command started: ${command}`);
             // Start child process
             const result = child_process_1.default.spawnSync(`${command}`, Object.assign({ shell: true, env: exports.shell.assembleShellEnv() }, shellOpts));
             // Log command
-            logger_1.default.info(`CLI Command finished: ${command}`);
+            logger_1.default.info(`Sync CLI Command finished: ${command}`);
+            logger_1.default.error('result.stderr ', result.stderr.toString());
             // TODO: this method only returns stdout and not stderr...
             return this.removeANSIcolors(result.stdout.toString());
         }
@@ -182,9 +182,8 @@ exports.shell = {
     },
     assembleShellEnv: function assembleShellEnv() {
         const spawnedEnv = Object.assign({}, process.env);
-        console.log(`This platform is ${platform}`);
         if (process.platform === 'win32') {
-            spawnedEnv.PATH = process.env.PATH;
+            spawnedEnv.PATH = process.env.PATH + ';C:\\Windows\\system32';
         }
         // Always enable test trace output
         spawnedEnv.SLACK_TEST_TRACE = 'true';
