@@ -181,6 +181,10 @@ export declare const SlackCLI: {
     } | undefined) => Promise<string>;
     createAppFromTemplate: ({ templateString, appName, branchName, shellOpts, }: {
         templateString: string;
+        /**
+         * Delete app and Log out of all sessions
+         * @param options
+         */
         appName?: string | undefined;
         branchName?: string | undefined;
         shellOpts?: import("child_process").SpawnOptionsWithoutStdio | undefined;
@@ -217,7 +221,6 @@ export declare const SlackCLI: {
         loginChallengeExchange: (challenge: string, authTicket: string, options?: {
             qa?: boolean | undefined;
         } | undefined) => Promise<string>;
-        /** Path to app. If not provided, will not interact with any app */
         logout: (options?: {
             teamFlag?: string | undefined;
             allWorkspaces?: boolean | undefined;
@@ -234,7 +237,6 @@ export declare const SlackCLI: {
     loginChallengeExchange: (challenge: string, authTicket: string, options?: {
         qa?: boolean | undefined;
     } | undefined) => Promise<string>;
-    /** Path to app. If not provided, will not interact with any app */
     logout: (options?: {
         teamFlag?: string | undefined;
         allWorkspaces?: boolean | undefined;
