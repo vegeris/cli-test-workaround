@@ -25,9 +25,6 @@ export declare const install: (appPath: string, teamFlag: string, options?: {
 export declare const list: (appPath: string, options?: {
     qa?: boolean;
 }) => Promise<string>;
-export declare const listSync: (appPath: string, options?: {
-    qa?: boolean;
-}) => Promise<string>;
 declare const _default: {
     workspaceDelete: (appPath: string, teamFlag: string, options?: {
         isLocalApp?: boolean | undefined;
@@ -37,9 +34,6 @@ declare const _default: {
         qa?: boolean | undefined;
     } | undefined) => Promise<string>;
     workspaceList: (appPath: string, options?: {
-        qa?: boolean | undefined;
-    } | undefined) => Promise<string>;
-    workspaceListSync: (appPath: string, options?: {
         qa?: boolean | undefined;
     } | undefined) => Promise<string>;
 };

@@ -6,8 +6,6 @@ import { shell } from '../shell';
 
 import type { ShellProcess } from '../../utils/types';
 
-import { ctrlc } from 'ctrlc-windows';
-
 // TODO: the options for these methods could be DRYed up
 
 export default {
@@ -180,7 +178,6 @@ export default {
     /** Whether to operate against --slackdev or production */
     qa?: boolean; // TODO: this option is provided inconsistently across commands (breaking change)
   }): Promise<ShellProcess> {
-
     const cmd = new SlackCLIProcess('run', { team: teamFlag, qa }, {
       '--cleanup': cleanup,
       '--hide-triggers': hideTriggers,
@@ -202,24 +199,15 @@ export default {
    * @param teamName to check that app was deleted from that team
    */
   runStop: async function runStop(proc: ShellProcess, teamName?: string): Promise<void> {
-    
-    if (process.platform === 'win32'){
-      ctrlc(proc.process.pid!);
-      //await new Promise((resolve) => setTimeout(resolve, 2000 ));
-      return new Promise((resolve, reject) => {
-        // kill? then 
-        shell.waitForOutput(SlackTracerId.SLACK_TRACE_PLATFORM_RUN_STOP, proc).then(resolve, reject);
-      });
-    } else {
     // TODO: teamName param should be changed to something else. 'wait for shutdown' or some such (breaking change)
     return new Promise((resolve, reject) => {
       // kill the shell process
       shell.kill(proc).then(() => {
 
-        // TODO: summarize issues
-        if (process.platform === 'win32'){
+        // For the team being, we don't wait for the 'run stop' string on Windows 
+        // See HERMES-6136 for more information
+        if (process.platform === "win32") {
           resolve();
-          return;
         }
 
         if (teamName) {
@@ -236,8 +224,5 @@ export default {
         reject(new Error(msg));
       });
     });
-    }
-    
-
   },
 };
