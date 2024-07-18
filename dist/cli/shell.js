@@ -74,11 +74,12 @@ exports.shell = {
     runCommandSync: function runSyncCommand(command, shellOpts) {
         try {
             // Log command
-            logger_1.default.info(`CLI Command started: ${command}`);
+            logger_1.default.info(`Sync CLI Command started: ${command}`);
             // Start child process
             const result = child_process_1.default.spawnSync(`${command}`, Object.assign({ shell: true, env: exports.shell.assembleShellEnv() }, shellOpts));
             // Log command
-            logger_1.default.info(`CLI Command finished: ${command}`);
+            logger_1.default.info(`Sync CLI Command finished: ${command}`);
+            logger_1.default.error('result.stderr ', result.stderr.toString());
             // TODO: this method only returns stdout and not stderr...
             return this.removeANSIcolors(result.stdout.toString());
         }
@@ -181,8 +182,8 @@ exports.shell = {
     },
     assembleShellEnv: function assembleShellEnv() {
         const spawnedEnv = Object.assign({}, process.env);
-        if (process.platform === "win32") {
-            spawnedEnv.PATH = process.env.PATH;
+        if (process.platform === 'win32') {
+            spawnedEnv.PATH = process.env.PATH + ';C:\\Windows\\system32';
         }
         // Always enable test trace output
         spawnedEnv.SLACK_TEST_TRACE = 'true';

@@ -7,6 +7,7 @@ import logger from '../utils/logger';
 
 import type { ShellProcess } from '../utils/types';
 
+
 export const shell = {
   /**
    * Spawns a shell command
@@ -81,7 +82,7 @@ export const shell = {
   ): string {
     try {
       // Log command
-      logger.info(`CLI Command started: ${command}`);
+      logger.info(`Sync CLI Command started: ${command}`);
 
       // Start child process
       const result = child.spawnSync(`${command}`, {
@@ -91,7 +92,9 @@ export const shell = {
       });
 
       // Log command
-      logger.info(`CLI Command finished: ${command}`);
+      logger.info(`Sync CLI Command finished: ${command}`);
+      
+logger.error('result.stderr ', result.stderr.toString());
 
       // TODO: this method only returns stdout and not stderr...
       return this.removeANSIcolors(result.stdout.toString());
@@ -203,8 +206,8 @@ export const shell = {
   },
   assembleShellEnv: function assembleShellEnv(): Record<string, string | undefined> {
     const spawnedEnv = { ...process.env };
-    if (process.platform === "win32"){
-      spawnedEnv.PATH = process.env.PATH;
+    if (process.platform === 'win32'){
+      spawnedEnv.PATH = process.env.PATH+';C:\\Windows\\system32';
     }
     // Always enable test trace output
     spawnedEnv.SLACK_TEST_TRACE = 'true';

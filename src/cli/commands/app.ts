@@ -1,5 +1,6 @@
 import { SlackCLIProcess } from '../cli-process';
 import commandError from '../command-error';
+import { shell } from '../shell';
 
 /**
  * `slack app delete`
@@ -65,7 +66,29 @@ export const list = async function appList(
     const proc = await cmd.execAsync({
       cwd: appPath,
     });
+
     return proc.output;
+  } catch (error) {
+    throw commandError(error, 'appList');
+  }
+};
+
+export const listSync = async function appListSync(
+  appPath: string,
+  options?: { qa?: boolean },
+): Promise<string> {
+
+  // TODO: (breaking change) separate parameters vs single-param-object
+  const cmd = new SlackCLIProcess('app list', options);
+  try {
+    const output = await cmd.execSync({
+      cwd: appPath,
+    });
+
+    const lsproc = shell.spawnProcess('ls');
+    await shell.checkIfFinished(lsproc);
+
+    return output;
   } catch (error) {
     throw commandError(error, 'appList');
   }
@@ -76,4 +99,5 @@ export default {
   workspaceDelete: del,
   workspaceInstall: install,
   workspaceList: list,
+  workspaceListSync: listSync,
 };

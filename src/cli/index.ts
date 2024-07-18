@@ -22,6 +22,7 @@ export const SlackCLI = {
     delete: appCommands.workspaceDelete,
     install: appCommands.workspaceInstall,
     list: appCommands.workspaceList,
+    listSync: appCommands.workspaceListSync,
   },
   ...authCommands,
   auth: authCommands,
@@ -79,9 +80,10 @@ export const SlackCLI = {
     qa?: boolean;
   }): Promise<void> {
     // TODO: perhaps appPath does not exist, should guard against that.
+    console.log('stopSession: await SlackCLI.app.listsync ', appPath);
     if (appPath) {
       // List instances of app installation if app path provided
-      const installedAppsOutput = await SlackCLI.app.list(appPath, { qa });
+      const installedAppsOutput = await SlackCLI.app.listSync(appPath, { qa });
       // If app is installed
       if (!installedAppsOutput.includes('This project has no apps')) {
         // Soft app delete

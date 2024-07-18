@@ -56,6 +56,7 @@ exports.SlackCLI = Object.assign(Object.assign(Object.assign(Object.assign(Objec
         delete: app_1.default.workspaceDelete,
         install: app_1.default.workspaceInstall,
         list: app_1.default.workspaceList,
+        listSync: app_1.default.workspaceListSync,
     } }), auth_1.default), { auth: auth_1.default }), collaborator_1.default), { collaborators: {
         add: collaborator_1.default.collaboratorsAdd,
         list: collaborator_1.default.collaboratorsList,
@@ -83,9 +84,10 @@ exports.SlackCLI = Object.assign(Object.assign(Object.assign(Object.assign(Objec
     stopSession: function stopSession({ appPath, appTeamID, isLocalApp, qa, }) {
         return __awaiter(this, void 0, void 0, function* () {
             // TODO: perhaps appPath does not exist, should guard against that.
+            console.log('stopSession: await SlackCLI.app.listsync ', appPath);
             if (appPath) {
                 // List instances of app installation if app path provided
-                const installedAppsOutput = yield exports.SlackCLI.app.list(appPath, { qa });
+                const installedAppsOutput = yield exports.SlackCLI.app.listSync(appPath, { qa });
                 // If app is installed
                 if (!installedAppsOutput.includes('This project has no apps')) {
                     // Soft app delete

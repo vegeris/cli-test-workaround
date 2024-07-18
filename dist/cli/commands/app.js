@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.list = exports.install = exports.del = void 0;
+exports.listSync = exports.list = exports.install = exports.del = void 0;
 const cli_process_1 = require("../cli-process");
 const command_error_1 = __importDefault(require("../command-error"));
+const shell_1 = require("../shell");
 /**
  * `slack app delete`
  * @param appPath path to app
@@ -83,10 +84,29 @@ const list = function appList(appPath, options) {
     });
 };
 exports.list = list;
+const listSync = function appListSync(appPath, options) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // TODO: (breaking change) separate parameters vs single-param-object
+        const cmd = new cli_process_1.SlackCLIProcess('app list', options);
+        try {
+            const output = yield cmd.execSync({
+                cwd: appPath,
+            });
+            const lsproc = shell_1.shell.spawnProcess('ls');
+            yield shell_1.shell.checkIfFinished(lsproc);
+            return output;
+        }
+        catch (error) {
+            throw (0, command_error_1.default)(error, 'appList');
+        }
+    });
+};
+exports.listSync = listSync;
 // TODO: (breaking change): rename properties of this default export to match actual command names
 exports.default = {
     workspaceDelete: exports.del,
     workspaceInstall: exports.install,
     workspaceList: exports.list,
+    workspaceListSync: exports.listSync,
 };
 //# sourceMappingURL=app.js.map
