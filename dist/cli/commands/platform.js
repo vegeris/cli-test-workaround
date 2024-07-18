@@ -17,7 +17,6 @@ const logger_1 = __importDefault(require("../../utils/logger"));
 const cli_process_1 = require("../cli-process");
 const command_error_1 = __importDefault(require("../command-error"));
 const shell_1 = require("../shell");
-const ctrlc_windows_1 = require("ctrlc-windows");
 // TODO: the options for these methods could be DRYed up
 exports.default = {
     /**
@@ -137,40 +136,25 @@ exports.default = {
      */
     runStop: function runStop(proc, teamName) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (process.platform === 'win32') {
-                (0, ctrlc_windows_1.ctrlc)(proc.process.pid);
-                //await new Promise((resolve) => setTimeout(resolve, 2000 ));
-                return new Promise((resolve, reject) => {
-                    // kill? then 
-                    shell_1.shell.waitForOutput(constants_1.SlackTracerId.SLACK_TRACE_PLATFORM_RUN_STOP, proc).then(resolve, reject);
+            // TODO: teamName param should be changed to something else. 'wait for shutdown' or some such (breaking change)
+            return new Promise((resolve, reject) => {
+                // kill the shell process
+                shell_1.shell.kill(proc).then(() => {
+                    if (teamName) {
+                        // TODO: this is messed up. does not match to parameter name at all - team name has nothing to do with this.
+                        // Check if local app was deleted automatically, if --cleanup was passed to `runStart`
+                        // Wait for the output to verify process stopped
+                        shell_1.shell.waitForOutput(constants_1.SlackTracerId.SLACK_TRACE_PLATFORM_RUN_STOP, proc).then(resolve, reject);
+                    }
+                    else {
+                        resolve();
+                    }
+                }, (err) => {
+                    const msg = `runStop command failed to kill process: ${err}`;
+                    logger_1.default.warn(msg);
+                    reject(new Error(msg));
                 });
-            }
-            else {
-                // TODO: teamName param should be changed to something else. 'wait for shutdown' or some such (breaking change)
-                return new Promise((resolve, reject) => {
-                    // kill the shell process
-                    shell_1.shell.kill(proc).then(() => {
-                        // TODO: summarize issues
-                        if (process.platform === 'win32') {
-                            resolve();
-                            return;
-                        }
-                        if (teamName) {
-                            // TODO: this is messed up. does not match to parameter name at all - team name has nothing to do with this.
-                            // Check if local app was deleted automatically, if --cleanup was passed to `runStart`
-                            // Wait for the output to verify process stopped
-                            shell_1.shell.waitForOutput(constants_1.SlackTracerId.SLACK_TRACE_PLATFORM_RUN_STOP, proc).then(resolve, reject);
-                        }
-                        else {
-                            resolve();
-                        }
-                    }, (err) => {
-                        const msg = `runStop command failed to kill process: ${err}`;
-                        logger_1.default.warn(msg);
-                        reject(new Error(msg));
-                    });
-                });
-            }
+            });
         });
     },
 };

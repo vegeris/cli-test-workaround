@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createAppFromTemplate = exports.createSync = exports.create = void 0;
+exports.createAppFromTemplate = exports.create = void 0;
 const cli_process_1 = require("../cli-process");
 const command_error_1 = __importDefault(require("../command-error"));
 /**
@@ -39,24 +39,6 @@ globalOpts, commandOpts, shellOpts) {
     });
 };
 exports.create = create;
-const createSync = function createSync(appName, // TODO: bad arg name. it should be app path, because this is effectively how it is used
-globalOpts, commandOpts, shellOpts) {
-    // TODO: single object param vs separate params (breaking change)
-    let cmdStr = 'create';
-    if (appName) {
-        cmdStr += ` ${appName}`;
-    }
-    const cmd = new cli_process_1.SlackCLIProcess(cmdStr, globalOpts, commandOpts);
-    try {
-        const output = cmd.execSync(shellOpts);
-        console.log('createSync out ', output);
-        return output;
-    }
-    catch (error) {
-        throw (0, command_error_1.default)(error, 'create');
-    }
-};
-exports.createSync = createSync;
 // TODO: (breaking change) remove this method
 /**
  * `slack create` using a template
@@ -69,7 +51,7 @@ exports.createSync = createSync;
 const createAppFromTemplate = function createAppFromTemplate({ templateString, appName = '', branchName = 'main', shellOpts = {}, }) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            return (0, exports.createSync)(appName, {}, {
+            return yield (0, exports.create)(appName, {}, {
                 '--template': templateString,
                 '--branch': branchName,
             }, shellOpts);

@@ -23,7 +23,6 @@ export default {
      */
     authTicket: string;
   }> {
-
     const cmd = new SlackCLIProcess('login', options, {
       '--no-prompt': true,
     });

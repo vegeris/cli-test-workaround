@@ -70,6 +70,9 @@ export declare const SlackCLI: {
     platform: {
         activity: ({ appPath, teamFlag, flag, localApp, qa, }: {
             appPath: string;
+            /**
+             * Set of functions to spawn and interact with Slack Platform CLI processes and commands
+             */
             teamFlag: string;
             flag?: string | undefined;
             localApp?: boolean | undefined;
@@ -105,6 +108,9 @@ export declare const SlackCLI: {
     };
     activity: ({ appPath, teamFlag, flag, localApp, qa, }: {
         appPath: string;
+        /**
+         * Set of functions to spawn and interact with Slack Platform CLI processes and commands
+         */
         teamFlag: string;
         flag?: string | undefined;
         localApp?: boolean | undefined;
@@ -200,6 +206,7 @@ export declare const SlackCLI: {
     collaboratorsAdd: (appPath: string, teamFlag: string, collaboratorEmail: string, options?: {
         qa?: boolean | undefined;
     } | undefined) => Promise<string>;
+    /** Path to app. If not provided, will not interact with any app */
     collaboratorsList: (appPath: string, teamFlag: string, options?: {
         qa?: boolean | undefined;
     } | undefined) => Promise<string>;
@@ -216,8 +223,7 @@ export declare const SlackCLI: {
         }>;
         loginChallengeExchange: (challenge: string, authTicket: string, options?: {
             qa?: boolean | undefined;
-        } | undefined) => Promise<string>;
-        /** Path to app. If not provided, will not interact with any app */
+        } | undefined) => Promise<string>; /** Path to app. If not provided, will not interact with any app */
         logout: (options?: {
             teamFlag?: string | undefined;
             allWorkspaces?: boolean | undefined;
@@ -233,8 +239,7 @@ export declare const SlackCLI: {
     }>;
     loginChallengeExchange: (challenge: string, authTicket: string, options?: {
         qa?: boolean | undefined;
-    } | undefined) => Promise<string>;
-    /** Path to app. If not provided, will not interact with any app */
+    } | undefined) => Promise<string>; /** Path to app. If not provided, will not interact with any app */
     logout: (options?: {
         teamFlag?: string | undefined;
         allWorkspaces?: boolean | undefined;
@@ -251,9 +256,6 @@ export declare const SlackCLI: {
         list: (appPath: string, options?: {
             qa?: boolean | undefined;
         } | undefined) => Promise<string>;
-        listSync: (appPath: string, options?: {
-            qa?: boolean | undefined;
-        } | undefined) => Promise<string>;
     };
     workspaceDelete: (appPath: string, teamFlag: string, options?: {
         isLocalApp?: boolean | undefined;
@@ -263,9 +265,6 @@ export declare const SlackCLI: {
         qa?: boolean | undefined;
     } | undefined) => Promise<string>;
     workspaceList: (appPath: string, options?: {
-        qa?: boolean | undefined;
-    } | undefined) => Promise<string>;
-    workspaceListSync: (appPath: string, options?: {
         qa?: boolean | undefined;
     } | undefined) => Promise<string>;
 };

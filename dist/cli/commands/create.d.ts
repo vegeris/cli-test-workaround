@@ -7,7 +7,6 @@ import { SlackCLICommandOptions, SlackCLIGlobalOptions } from '../cli-process';
  * @returns command output
  */
 export declare const create: (appName?: string, globalOpts?: SlackCLIGlobalOptions, commandOpts?: SlackCLICommandOptions, shellOpts?: SpawnOptionsWithoutStdio) => Promise<string>;
-export declare const createSync: (appName?: string, globalOpts?: SlackCLIGlobalOptions, commandOpts?: SlackCLICommandOptions, shellOpts?: SpawnOptionsWithoutStdio) => string;
 /**
  * `slack create` using a template
  * Creates an app from a specified template string.

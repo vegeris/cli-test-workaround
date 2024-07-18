@@ -4,11 +4,7 @@
   "description": "Node.js bindings for the Slack CLI for use in automated testing",
   "author": "Salesforce, Inc.",
   "license": "MIT",
-  "keywords": [
-    "slack",
-    "cli",
-    "test"
-  ],
+  "keywords": ["slack", "cli", "test"],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -33,7 +29,6 @@
     "test": "npm run lint && npm run build && c8 npm run mocha"
   },
   "dependencies": {
-    "ctrlc-windows": "^2.1.0",
     "tree-kill": "^1.2.2",
     "winston": "^3.8.2"
   },
